@@ -14,13 +14,14 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
   // 載入林班地 GeoJSON
-  fetch('forest_blocks.geojson')
-    .then(res => res.json())
-    .then(linbanData => {
-      L.geoJSON(linbanData, {
-        style: { color: "green", weight: 2, fillOpacity: 0.1 }
-      }).addTo(map);
-    });
+  fetch('forest_blocks_wgs84.geojson')
+  .then(res => res.json())
+  .then(linbanData => {
+    L.geoJSON(linbanData, {
+      style: { color: "blue", weight: 1, fillOpacity: 0.1 },
+      interactive: false   // 
+    }).addTo(map);
+  });
   
   var map = L.map('map');
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
