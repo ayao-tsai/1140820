@@ -13,6 +13,15 @@
 <div id="map"></div>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
+  // 載入林班地 GeoJSON
+  fetch('forest_blocks.geojson')
+    .then(res => res.json())
+    .then(linbanData => {
+      L.geoJSON(linbanData, {
+        style: { color: "green", weight: 2, fillOpacity: 0.1 }
+      }).addTo(map);
+    });
+  
   var map = L.map('map');
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
@@ -37,14 +46,7 @@
   var bounds = layer.getBounds();
   map.fitBounds(bounds.pad(0.2));
 
-// 載入林班地 GeoJSON
-  fetch('forest_blocks.geojson')
-    .then(res => res.json())
-    .then(linbanData => {
-      L.geoJSON(linbanData, {
-        style: { color: "green", weight: 2, fillOpacity: 0.1 }
-      }).addTo(map);
-    });
+
 
 </script>
 </body>
