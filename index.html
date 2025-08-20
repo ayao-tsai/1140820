@@ -25,7 +25,11 @@
     },
     onEachFeature: function (feature, layer) {
       var p = feature.properties;
-      layer.bindPopup("ID:"+p.id+"<br>TWD97: "+p.x+","+p.y+"<br>Zone:"+p.zone);
+      layer.bindPopup( "ID: " + p.id + "<br>" +
+    "TWD97: " + p.x + "," + p.y + "<br>" +
+    "Zone: " + p.zone + "<br>" +
+    "佔用人: " + (p["佔用人"] || "") + "<br>" +
+    "占用型態: " + (p["占用型態"] || "");
     }
   }).addTo(map);
   var bounds = layer.getBounds();
