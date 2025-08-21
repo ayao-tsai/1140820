@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TWD97 原始座標套疊圖</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.awesome-markers/2.0.4/leaflet.awesome-markers.css">
 <style>
   html, body, #map { height: 100%; margin: 0; }
 </style>
@@ -12,6 +13,7 @@
 <body>
 <div id="map"></div>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.awesome-markers/2.0.4/leaflet.awesome-markers.js"></script>
 <script>
   // 先初始化地圖
   var map = L.map('map');
@@ -64,6 +66,48 @@
     ]
   };
 
+// 依占用型態選擇 icon
+  function getMarkerIcon(type) {
+    switch(type) {
+      case "寺廟":
+        return L.AwesomeMarkers.icon({
+          icon: 'place-of-worship',
+          prefix: 'fa',
+          markerColor: 'red'
+        });
+      case "墳墓":
+        return L.AwesomeMarkers.icon({
+          icon: 'cross',
+          prefix: 'fa',
+          markerColor: 'green'
+        });
+      case "房舍工寮":
+        return L.AwesomeMarkers.icon({
+          icon: 'home',
+          prefix: 'fa',
+          markerColor: 'blue'
+        });
+      case "水池":
+        return L.AwesomeMarkers.icon({
+          icon: 'tint',
+          prefix: 'fa',
+          markerColor: 'cadetblue'
+        });
+      case "農作物墾殖":
+        return L.AwesomeMarkers.icon({
+          icon: 'leaf',
+          prefix: 'fa',
+          markerColor: 'orange'
+        });
+      default:
+        return L.AwesomeMarkers.icon({
+          icon: 'question',
+          prefix: 'fa',
+          markerColor: 'gray'
+        });
+    }
+  }
+
   // 加入點位資料（有 popup）
   var layer = L.geoJSON(data, {
     pointToLayer: function (feature, latlng) {
@@ -81,6 +125,12 @@
     }
   }).addTo(map);
 
+pointToLayer: function (feature, latlng) {
+  var type = feature.properties["占用型態"];
+  return L.marker(latlng, { icon: getMarkerIcon(type) });
+},
+
+  
   // 地圖自動縮放到點位範圍
   var bounds = layer.getBounds();
   map.fitBounds(bounds.pad(0.2));
