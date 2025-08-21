@@ -108,27 +108,23 @@
     }
   }
 
-  // 加入點位資料（有 popup）
-  var layer = L.geoJSON(data, {
-    pointToLayer: function (feature, latlng) {
-      return L.circleMarker(latlng, {radius: 5, fillOpacity:0.7});
-    },
-    onEachFeature: function (feature, layer){
-      var p = feature.properties;
-      layer.bindPopup(
-        "ID: " + p.id + "<br>" +
-        "TWD97: " + p.x + "," + p.y + "<br>" +
-        "Zone: " + p.zone + "<br>" +
-        "佔用人: " + (p["佔用人"] || "") + "<br>" +
-        "占用型態: " + (p["占用型態"] || "")
-      );
-    }
-  }).addTo(map);
-
-pointToLayer: function (feature, latlng) {
-  var type = feature.properties["占用型態"];
-  return L.marker(latlng, { icon: getMarkerIcon(type) });
-},
+ // 加入點位資料（有 popup）
+var layer = L.geoJSON(data, {
+  pointToLayer: function (feature, latlng) {
+    var type = feature.properties["占用型態"];
+    return L.marker(latlng, { icon: getMarkerIcon(type) });
+  },
+  onEachFeature: function (feature, layer){
+    var p = feature.properties;
+    layer.bindPopup(
+      "ID: " + p.id + "<br>" +
+      "TWD97: " + p.x + "," + p.y + "<br>" +
+      "Zone: " + p.zone + "<br>" +
+      "佔用人: " + (p["佔用人"] || "") + "<br>" +
+      "占用型態: " + (p["占用型態"] || "")
+    );
+  }
+}).addTo(map);
 
   
   // 地圖自動縮放到點位範圍
