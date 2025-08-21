@@ -5,112 +5,99 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TWD97 原始座標套疊圖</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.awesome-markers/2.0.4/leaflet.awesome-markers.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
-  html, body { height: 100%; margin: 0; padding: 0; }
-  #map { width: 100%; height: 100vh; }
+  html, body, #map { height: 100%; margin: 0; }
 </style>
 </head>
 <body>
 <div id="map"></div>
+
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.awesome-markers/2.0.4/leaflet.awesome-markers.js"></script>
 <script>
+  // 初始化地圖
   var map = L.map('map');
 
-  // OSM 底圖
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
     attribution: '&copy; OpenStreetMap contributors'
   }).addTo(map);
 
-  // 林班地範例
-  var linbanData = {
-    "type": "FeatureCollection",
-    "features": [
-      {"type":"Feature","properties":{},"geometry":{"type":"Polygon","coordinates":[[[120.80,21.95],[120.85,21.95],[120.85,22.00],[120.80,22.00],[120.80,21.95]]]}}
-    ]
-  };
-  L.geoJSON(linbanData, { style: { color: "blue", weight: 1, fillOpacity: 0.1 }, interactive: false }).addTo(map);
+  // 載入林班地 GeoJSON
+  fetch('forest_blocks.geojson')
+    .then(res => res.json())
+    .then(linbanData => {
+      L.geoJSON(linbanData, {
+        style: { color: "blue", weight: 1, fillOpacity: 0.1 },
+        interactive: false
+      }).addTo(map);
+    });
 
-  // ===== 完整點位資料 =====
+  // 佔用點位資料
   var data = {
     "type": "FeatureCollection",
     "features": [
-      {"type":"Feature","properties":{"id":1,"x":231661.0,"y":2426362.0,"zone":121,"佔用人":"帆船石萬聖宮","占用型態":"寺廟"},"geometry":{"type":"Point","coordinates":[120.82246680021727,21.934918788224657]}},
-      {"type":"Feature","properties":{"id":2,"x":232680.0,"y":2425269.0,"zone":121,"佔用人":"香蕉灣鎮海宮","占用型態":"寺廟"},"geometry":{"type":"Point","coordinates":[120.83234289935699,21.925057283544593]}},
-      {"type":"Feature","properties":{"id":3,"x":235005.0,"y":2423980.0,"zone":121,"佔用人":"坑內福安宮","占用型態":"寺廟"},"geometry":{"type":"Point","coordinates":[120.85486057201072,21.913436546875108]}},
-      {"type":"Feature","properties":{"id":4,"x":233577.0,"y":2424327.0,"zone":121,"佔用人":"埔頂路土地公廟","占用型態":"寺廟"},"geometry":{"type":"Point","coordinates":[120.84103525203702,21.916557847753822]}},
-      {"type":"Feature","properties":{"id":5,"x":230812.0,"y":2433364.0,"zone":121,"佔用人":"37林班廟宇","占用型態":"寺廟"},"geometry":{"type":"Point","coordinates":[120.81416573309994,21.9981506946634]}},
-      {"type":"Feature","properties":{"id":6,"x":234109.0,"y":2437723.0,"zone":121,"佔用人":"欖仁路廟宇","占用型態":"寺廟"},"geometry":{"type":"Point","coordinates":[120.84605429659877,22.03755340098851]}},
-      {"type":"Feature","properties":{"id":7,"x":238678.0,"y":2443091.0,"zone":121,"佔用人":"南仁漁港廟宇","占用型態":"寺廟"},"geometry":{"type":"Point","coordinates":[120.89027947659291,22.08607157701605]}},
-      {"type":"Feature","properties":{"id":8,"x":225207.0,"y":2431708.0,"zone":121,"佔用人":"吳恆慶、吳春信、吳貴順等人","占用型態":"墳墓"},"geometry":{"type":"Point","coordinates":[120.7599072387372,21.983123568501725]}},
-      {"type":"Feature","properties":{"id":9,"x":225264.0,"y":2431793.0,"zone":121,"佔用人":"陳文富、陳賢諒","占用型態":"墳墓"},"geometry":{"type":"Point","coordinates":[120.76045792872542,21.983892077777107]}},
-      {"type":"Feature","properties":{"id":10,"x":225185.0,"y":2431713.0,"zone":121,"佔用人":"龔榮坤(墓碑所載龔成枝)","占用型態":"墳墓"},"geometry":{"type":"Point","coordinates":[120.75969411850045,21.983168415658845]}},
-      {"type":"Feature","properties":{"id":11,"x":225258.0,"y":2431788.0,"zone":121,"佔用人":"陳進來、陳進玉","占用型態":"墳墓"},"geometry":{"type":"Point","coordinates":[120.76039990123958,21.983846833976514]}},
-      {"type":"Feature","properties":{"id":12,"x":228085.0,"y":2427680.0,"zone":121,"佔用人":"恆春鎮公所","占用型態":"墳墓"},"geometry":{"type":"Point","coordinates":[120.78783135511246,21.946781750838234]}},
-      {"type":"Feature","properties":{"id":13,"x":233520.0,"y":2431763.0,"zone":121,"佔用人":"潘枝肉","占用型態":"墳墓"},"geometry":{"type":"Point","coordinates":[120.84040858808036,21.983718349532523]}},
-      {"type":"Feature","properties":{"id":14,"x":236982.0,"y":2445365.0,"zone":121,"佔用人":"不詳","占用型態":"墳墓"},"geometry":{"type":"Point","coordinates":[120.8738254606261,22.106597873233458]}},
-      {"type":"Feature","properties":{"id":30,"x":237862.0,"y":2445921.0,"zone":121,"佔用人":"潘萬貴","占用型態":"房舍工寮"},"geometry":{"type":"Point","coordinates":[120.8823505176882,22.111625872423318]}},
-      {"type":"Feature","properties":{"id":31,"x":237640.0,"y":2446014.0,"zone":121,"佔用人":"潘玉蕊","占用型態":"房舍工寮"},"geometry":{"type":"Point","coordinates":[120.88019804170717,22.11246425790487]}},
-      {"type":"Feature","properties":{"id":32,"x":237635.0,"y":2446028.0,"zone":121,"佔用人":"吳敏雲（朱咨柔）","占用型態":"房舍工寮"},"geometry":{"type":"Point","coordinates":[120.88014947136364,22.112590666339]}},
-      {"type":"Feature","properties":{"id":33,"x":219165.35,"y":2448990.303,"zone":121,"佔用人":"林茂盛(滿豐漁場)","占用型態":"水池"},"geometry":{"type":"Point","coordinates":[120.70107313999323,22.139115541040578]}},
-      {"type":"Feature","properties":{"id":34,"x":219202.09,"y":2448916.0,"zone":121,"佔用人":"林茂盛(滿豐漁場)","占用型態":"水池"},"geometry":{"type":"Point","coordinates":[120.7014307272043,22.138445119520583]}},
-      {"type":"Feature","properties":{"id":35,"x":218284.32,"y":2437497.25,"zone":121,"佔用人":"許節一(觀音巖)","占用型態":"寺廟"},"geometry":{"type":"Point","coordinates":[120.69275673872767,22.035298665285968]}},
-      {"type":"Feature","properties":{"id":36,"x":218272.41,"y":2437464.06,"zone":121,"佔用人":"許節一(觀音巖)","占用型態":"寺廟"},"geometry":{"type":"Point","coordinates":[120.69264200986714,22.03499868711318]}},
-      {"type":"Feature","properties":{"id":37,"x":220445.0,"y":2431710.0,"zone":121,"佔用人":"邵丁福(水仙尊王)","占用型態":"寺廟"},"geometry":{"type":"Point","coordinates":[120.71379290748393,21.98306768777447]}},
-      {"type":"Feature","properties":{"id":38,"x":222155.44,"y":2424730.871,"zone":121,"佔用人":"張南和","占用型態":"墳墓"},"geometry":{"type":"Point","coordinates":[120.73047530807268,21.920061572089466]}},
-      {"type":"Feature","properties":{"id":39,"x":238478.15,"y":2454842.426,"zone":121,"佔用人":"不詳","占用型態":"墳墓"},"geometry":{"type":"Point","coordinates":[120.8882590510578,22.19220546002869]}},
-      {"type":"Feature","properties":{"id":40,"x":219631.12,"y":2441754.426,"zone":121,"佔用人":"不詳","占用型態":"農作物墾殖"},"geometry":{"type":"Point","coordinates":[120.70572409286015,22.073772058104606]}},
-      {"type":"Feature","properties":{"id":41,"x":219720.63,"y":2441598.63,"zone":121,"佔用人":"不詳","占用型態":"農作物墾殖"},"geometry":{"type":"Point","coordinates":[120.70659434552873,22.072366520058555]}},
-      {"type":"Feature","properties":{"id":42,"x":220179.0,"y":2432133.0,"zone":121,"佔用人":"不詳","占用型態":"墳墓"},"geometry":{"type":"Point","coordinates":[120.71120929074316,21.98688360901871]}}
+      {"type":"Feature","properties":{"id":1,"x":231661,"y":2426362,"zone":121,"佔用人":"帆船石萬聖宮","占用型態":"寺廟"},"geometry":{"type":"Point","coordinates":[120.8224668,21.9349188]}},
+      {"type":"Feature","properties":{"id":2,"x":232680,"y":2425269,"zone":121,"佔用人":"香蕉灣鎮海宮","占用型態":"寺廟"},"geometry":{"type":"Point","coordinates":[120.8323429,21.9250573]}},
+      {"type":"Feature","properties":{"id":3,"x":235005,"y":2423980,"zone":121,"佔用人":"坑內福安宮","占用型態":"寺廟"},"geometry":{"type":"Point","coordinates":[120.8548606,21.9134365]}},
+      {"type":"Feature","properties":{"id":4,"x":233577,"y":2424327,"zone":121,"佔用人":"埔頂路土地公廟","占用型態":"寺廟"},"geometry":{"type":"Point","coordinates":[120.8410353,21.9165578]}},
+      {"type":"Feature","properties":{"id":5,"x":230812,"y":2433364,"zone":121,"佔用人":"37林班廟宇","占用型態":"寺廟"},"geometry":{"type":"Point","coordinates":[120.8141657,21.9981507]}},
+      {"type":"Feature","properties":{"id":6,"x":234109,"y":2437723,"zone":121,"佔用人":"欖仁路廟宇","占用型態":"寺廟"},"geometry":{"type":"Point","coordinates":[120.8460543,22.0375534]}},
+      {"type":"Feature","properties":{"id":7,"x":238678,"y":2443091,"zone":121,"佔用人":"南仁漁港廟宇","占用型態":"寺廟"},"geometry":{"type":"Point","coordinates":[120.8902795,22.0860716]}},
+      {"type":"Feature","properties":{"id":8,"x":225207,"y":2431708,"zone":121,"佔用人":"吳恆慶、吳春信、吳貴順等人","占用型態":"墳墓"},"geometry":{"type":"Point","coordinates":[120.7599072,21.9831236]}},
+      {"type":"Feature","properties":{"id":9,"x":225264,"y":2431793,"zone":121,"佔用人":"陳文富、陳賢諒","占用型態":"墳墓"},"geometry":{"type":"Point","coordinates":[120.7604579,21.9838921]}},
+      {"type":"Feature","properties":{"id":10,"x":225185,"y":2431713,"zone":121,"佔用人":"龔榮坤(墓碑所載龔成枝)","占用型態":"墳墓"},"geometry":{"type":"Point","coordinates":[120.7596941,21.9831684]}},
+      {"type":"Feature","properties":{"id":11,"x":225258,"y":2431788,"zone":121,"佔用人":"陳進來、陳進玉","占用型態":"墳墓"},"geometry":{"type":"Point","coordinates":[120.7603999,21.9838468]}},
+      {"type":"Feature","properties":{"id":12,"x":228085,"y":2427680,"zone":121,"佔用人":"恆春鎮公所","占用型態":"墳墓"},"geometry":{"type":"Point","coordinates":[120.7878314,21.9467818]}},
+      {"type":"Feature","properties":{"id":13,"x":233520,"y":2431763,"zone":121,"佔用人":"潘枝肉","占用型態":"墳墓"},"geometry":{"type":"Point","coordinates":[120.8404086,21.9837183]}},
+      {"type":"Feature","properties":{"id":14,"x":236982,"y":2445365,"zone":121,"佔用人":"不詳","占用型態":"墳墓"},"geometry":{"type":"Point","coordinates":[120.8738255,22.1065979]}},
+      {"type":"Feature","properties":{"id":30,"x":237862,"y":2445921,"zone":121,"佔用人":"潘萬貴","占用型態":"房舍工寮"},"geometry":{"type":"Point","coordinates":[120.8823505,22.1116259]}},
+      {"type":"Feature","properties":{"id":31,"x":237640,"y":2446014,"zone":121,"佔用人":"潘玉蕊","占用型態":"房舍工寮"},"geometry":{"type":"Point","coordinates":[120.880198,22.1124643]}},
+      {"type":"Feature","properties":{"id":32,"x":237635,"y":2446028,"zone":121,"佔用人":"吳敏雲（朱咨柔）","占用型態":"房舍工寮"},"geometry":{"type":"Point","coordinates":[120.8801495,22.1125907]}},
+      {"type":"Feature","properties":{"id":33,"x":219165.35,"y":2448990.303,"zone":121,"佔用人":"林茂盛(滿豐漁場)","占用型態":"水池"},"geometry":{"type":"Point","coordinates":[120.7010731,22.1391155]}},
+      {"type":"Feature","properties":{"id":34,"x":219202.09,"y":2448916,"zone":121,"佔用人":"林茂盛(滿豐漁場)","占用型態":"水池"},"geometry":{"type":"Point","coordinates":[120.7014307,22.1384451]}},
+      {"type":"Feature","properties":{"id":35,"x":218284.32,"y":2437497.25,"zone":121,"佔用人":"許節一(觀音巖)","占用型態":"寺廟"},"geometry":{"type":"Point","coordinates":[120.6927567,22.0352986]}},
+      {"type":"Feature","properties":{"id":36,"x":218272.41,"y":2437464.06,"zone":121,"佔用人":"許節一(觀音巖)","占用型態":"寺廟"},"geometry":{"type":"Point","coordinates":[120.692642,22.0349986]}},
+      {"type":"Feature","properties":{"id":37,"x":220445,"y":2431710,"zone":121,"佔用人":"邵丁福(水仙尊王)","占用型態":"寺廟"},"geometry":{"type":"Point","coordinates":[120.7137929,21.9830677]}},
+      {"type":"Feature","properties":{"id":38,"x":222155.44,"y":2424730.871,"zone":121,"佔用人":"張南和","占用型態":"墳墓"},"geometry":{"type":"Point","coordinates":[120.7304753,21.9200615]}},
+      {"type":"Feature","properties":{"id":39,"x":238478.15,"y":2454842.426,"zone":121,"佔用人":"不詳","占用型態":"墳墓"},"geometry":{"type":"Point","coordinates":[120.8882591,22.1922054]}},
+      {"type":"Feature","properties":{"id":40,"x":219631.12,"y":2441754.426,"zone":121,"佔用人":"不詳","占用型態":"農作物墾殖"},"geometry":{"type":"Point","coordinates":[120.705724,22.073772]}},
+      {"type":"Feature","properties":{"id":41,"x":219720.63,"y":2441598.63,"zone":121,"佔用人":"不詳","占用型態":"農作物墾殖"},"geometry":{"type":"Point","coordinates":[120.7065943,22.0723665]}},
+      {"type":"Feature","properties":{"id":42,"x":220179,"y":2432133,"zone":121,"佔用人":"不詳","占用型態":"墳墓"},"geometry":{"type":"Point","coordinates":[120.7112092,21.9868836]}}
     ]
   };
 
-  // Icon 定義
-  function getMarkerIcon(type) {
-    switch(type) {
-      case "寺廟": return L.AwesomeMarkers.icon({ icon: 'place-of-worship', prefix: 'fa', markerColor: 'red' });
-      case "墳墓": return L.AwesomeMarkers.icon({ icon: 'cross', prefix: 'fa', markerColor: 'green' });
-      case "房舍工寮": return L.AwesomeMarkers.icon({ icon: 'home', prefix: 'fa', markerColor: 'blue' });
-      case "水池": return L.AwesomeMarkers.icon({ icon: 'tint', prefix: 'fa', markerColor: 'cadetblue' });
-      case "農作物墾殖": return L.AwesomeMarkers.icon({ icon: 'leaf', prefix: 'fa', markerColor: 'orange' });
-      default: return L.AwesomeMarkers.icon({ icon: 'question', prefix: 'fa', markerColor: 'gray' });
-    }
-  }
-
-  // 加入點位
+  // 加入點位資料
   var layer = L.geoJSON(data, {
-    pointToLayer: function(feature, latlng) {
-      return L.marker(latlng, { icon: getMarkerIcon(feature.properties["占用型態"]) });
-    },
     onEachFeature: function(feature, layer) {
       var p = feature.properties;
       layer.bindPopup(
         "ID: " + p.id + "<br>" +
         "TWD97: " + p.x + "," + p.y + "<br>" +
         "Zone: " + p.zone + "<br>" +
-        "佔用人: " + p["佔用人"] + "<br>" +
-        "占用型態: " + p["占用型態"]
+        "佔用人: " + (p["佔用人"] || "") + "<br>" +
+        "占用型態: " + (p["占用型態"] || "")
       );
     }
   }).addTo(map);
 
+  // 自動縮放到點位範圍
   map.fitBounds(layer.getBounds().pad(0.2));
 
   // GPS 即時定位
   var userMarker = null;
   map.locate({watch: true, setView: true, maxZoom: 16});
-  map.on('locationfound', function(e){
-    if(userMarker){ userMarker.setLatLng(e.latlng); }
-    else{
-      userMarker = L.marker(e.latlng, {icon:L.icon({
-        iconUrl:'https://cdn-icons-png.flaticon.com/512/64/64113.png', iconSize:[32,32], iconAnchor:[16,32]
-      })}).addTo(map).bindPopup("📍 你的位置");
+
+  map.on('locationfound', function(e) {
+    if (userMarker) {
+      userMarker.setLatLng(e.latlng);
+    } else {
+      userMarker = L.marker(e.latlng).addTo(map).bindPopup("📍 你的位置");
     }
   });
-  map.on('locationerror', function(e){ console.warn("⚠️ 無法取得 GPS 位置：" + e.message); });
+
+  map.on('locationerror', function(e) {
+    console.warn("無法取得 GPS 位置：" + e.message);
+  });
 </script>
 </body>
 </html>
