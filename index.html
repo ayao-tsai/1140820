@@ -84,6 +84,31 @@
   // 地圖自動縮放到點位範圍
   var bounds = layer.getBounds();
   map.fitBounds(bounds.pad(0.2));
+  
+  // ===== GPS 即時定位 =====
+var userMarker = null;
+
+// 啟用持續追蹤
+map.locate({watch: true, setView: true, maxZoom: 16});
+
+// 取得位置成功
+map.on('locationfound', function(e) {
+  if (userMarker) {
+    userMarker.setLatLng(e.latlng);
+  } else {
+    userMarker = L.marker(e.latlng, {icon: L.icon({
+      iconUrl: 'https://cdn-icons-png.flaticon.com/512/64/64113.png',
+      iconSize: [32, 32],
+      iconAnchor: [16, 32]
+    })}).addTo(map).bindPopup("📍 你的位置");
+  }
+});
+
+// 失敗處理
+map.on('locationerror', function(e) {
+  alert("⚠️ 無法取得 GPS 位置：" + e.message);
+});
+
 </script>
 </body>
 </html>
